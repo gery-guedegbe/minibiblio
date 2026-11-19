@@ -1,12 +1,14 @@
-import { Sidebar } from "./components/Sidebar";
+import { Routes, Route } from "react-router";
+import Layout from "./layouts/Layout";
 import { Dashboard } from "./pages/Dashboard";
 
 function App() {
   return (
-    <div className="flex bg-slate-50">
-      <Sidebar />
-      <Dashboard />
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Dashboard />} />
+      </Route>
+    </Routes>
   );
 }
 

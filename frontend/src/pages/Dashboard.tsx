@@ -1,11 +1,14 @@
+import type { Book } from "../types/types";
 import { useEffect, useState } from "react";
+import { Book as BookIcon } from "lucide-react";
 import { useBookStore } from "../store/useBookStore";
-import { Book } from "lucide-react";
 import { AddBookModal } from "../components/AddBookModal";
+import { BorrowModal } from "../components/BorrowModal";
 
 export const Dashboard = () => {
-  const { books, isLoading, error, fetchBooks } = useBookStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { books, isLoading, error, fetchBooks } = useBookStore();
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
 
   useEffect(() => {
     fetchBooks();
@@ -50,7 +53,7 @@ export const Dashboard = () => {
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="p-3 bg-blue-50 text-blue-600 rounded-lg">
-                    <Book size={24} />
+                    <BookIcon size={24} />
                   </div>
 
                   <span
@@ -70,6 +73,20 @@ export const Dashboard = () => {
 
                 <p className="text-sm text-slate-500 mb-4">{book.author}</p>
                 <div className="text-xs text-slate-400">ISBN: {book.isbn}</div>
+
+                <div className="mt-4 pt-4 border-t border-slate-100 flex justify-between items-center">
+                  <span className="text-sm text-slate-500">
+                    Total: {book.total_copies}
+                  </span>
+
+                  <button
+                    onClick={() => setSelectedBook(book)}
+                    disabled={book.available_copies === 0}
+                    className="text-sm bg-slate-800 cursor-pointer text-white px-3 py-1.5 rounded-lg hover:bg-slate-900 disabled:bg-slate-300 disabled:cursor-not-allowed transition"
+                  >
+                    {book.available_copies === 0 ? "Indisponible" : "Emprunter"}
+                  </button>
+                </div>
               </div>
             ))
           )}
@@ -79,6 +96,12 @@ export const Dashboard = () => {
       <AddBookModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+
+      <BorrowModal
+        book={selectedBook}
+        onClose={() => setSelectedBook(null)}
+        onSuccess={() => fetchBooks()}
       />
     </div>
   );

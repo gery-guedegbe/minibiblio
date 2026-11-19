@@ -1,7 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const bookRoutes = require("./routes/books.routes");
-const errorHandler = require("./errors"); // On le créera juste après
+const loanRoutes = require("./routes/loans.routes");
+const errorHandler = require("./errors");
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(express.json()); // Permet de lire le JSON dans les requêtes POST/PUT
 
 // Routes
 app.use("/api/books", bookRoutes);
+app.use("/api/loans", loanRoutes);
 
 // Middleware de gestion d'erreurs
 app.use(errorHandler);
