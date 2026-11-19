@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS books (
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
+    author TEXT NOT NULL,
+    isbn TEXT NOT NULL UNIQUE,
+    total_copies INTEGER NOT NULL CHECK (total_copies >= 0)
+);
+
+CREATE TABLE IF NOT EXISTS members (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS loans (
+    id SERIAL PRIMARY KEY,
+    book_id INTEGER NOT NULL REFERENCES books(id) ON DELETE RESTRICT,
+    member_id INTEGER NOT NULL REFERENCES members(id) ON DELETE CASCADE,
+    loan_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    due_date DATE NOT NULL,
+    return_date DATE
+);
