@@ -1,5 +1,5 @@
 import { Book, Users, BookOpen } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 
 export const Sidebar = () => {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
@@ -18,12 +18,12 @@ export const Sidebar = () => {
           <Book size={20} /> Livres
         </NavLink>
 
-        <NavLink to="/members" className={linkClass}>
-          <Users size={20} /> Membres
-        </NavLink>
-
         <NavLink to="/loans" className={linkClass}>
           <BookOpen size={20} /> Emprunts
+        </NavLink>
+
+        <NavLink to="/members" className={linkClass}>
+          <Users size={20} /> Membres
         </NavLink>
       </nav>
     </aside>

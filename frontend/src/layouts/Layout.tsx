@@ -1,12 +1,10 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 import { Sidebar } from "../components/Sidebar";
-import { Dashboard } from "../pages/Dashboard";
 
 function Layout() {
   return (
     <div className="flex bg-slate-50 min-h-screen">
       <Sidebar />
-
       <Outlet />
     </div>
   );

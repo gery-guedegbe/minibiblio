@@ -79,4 +79,38 @@ const createLoan = async (member_id, book_id) => {
   }
 };
 
-module.exports = { createLoan };
+const getActiveLoans = async (memberId = null) => {
+  let query = `
+    SELECT 
+      l.id, 
+      l.book_id, 
+      l.member_id, 
+      l.loan_date, 
+      l.due_date, 
+      l.return_date,
+      b.title AS book_title,
+      b.author AS book_author,
+      m.name AS member_name,
+      m.email AS member_email,
+      (l.due_date < CURRENT_DATE) AS is_overdue
+    FROM loans l
+    JOIN books b ON l.book_id = b.id
+    JOIN members m ON l.member_id = m.id
+    WHERE l.return_date IS NULL
+  `;
+
+  const values = [];
+
+  // Filtre par membre si l'ID est fourni
+  if (memberId) {
+    query += ` AND l.member_id = $1`;
+    values.push(memberId);
+  }
+
+  query += ` ORDER BY l.due_date ASC`;
+
+  const result = await pool.query(query, values);
+  return result.rows;
+};
+
+module.exports = { createLoan, getActiveLoans };

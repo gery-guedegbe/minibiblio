@@ -23,4 +23,14 @@ const createLoan = async (req, res, next) => {
   }
 };
 
-module.exports = { createLoan };
+const getActiveLoans = async (req, res, next) => {
+  try {
+    const { member_id } = req.query;
+    const loans = await loansService.getActiveLoans(member_id);
+    res.status(200).json(loans);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { createLoan, getActiveLoans };
