@@ -75,6 +75,8 @@ npm test
   - Gestion centralisée des erreurs.
   - Endpoint `GET /api/books` : Récupération de la liste des livres
   - Endpoint `POST /api/books` : Création d'un livre avec validation et gestion de l'unicité de l'ISBN.
+  - Endpoint POST /api/loans : Création d'un emprunt. Les règles métier R1 (limite de 3 emprunts), R2 (disponibilité) et R3 (blocage en cas de retard) sont appliquées côté serveur via une transaction SQL.
+  - Endpoint GET /api/loans/active : Récupération des emprunts en cours, avec calcul du statut de retard (via CURRENT_DATE) et filtre optionnel par membre.
 
 - **Frontend** :
   - Initialisation du projet avec React, TypeScript et Tailwind CSS.
@@ -83,13 +85,13 @@ npm test
   - Affichage de la liste des livres connectée à l'API.
   - Formulaire d'ajout de livre sous forme de modal, avec validation stricte côté client via React Hook Form et Zod.
   - Gestion des états de chargement et affichage des erreurs renvoyées par l'API.
+  - Page Livres : Affichage de la liste connectée à l'API, formulaire d'ajout (React Hook Form + Zod) et modale d'emprunt rapide.
+  - Page Emprunts : Tableau listant les emprunts en cours, avec badge visuel pour les retards et filtre par membre.
 
 ### Ce qui n'a pas encore été réalisé
 
 - CRUD complet pour les membres.
-- Endpoint de création d'un emprunt (`POST /api/loans`) et application des règles métier (R1, R2, R3, R4).
 - Endpoint de retour d'un livre (`PUT /api/loans/:id/return`).
-- Liste des emprunts en cours avec indicateur de retard.
 - Interface frontend pour la gestion des membres et des emprunts.
 - Tests automatisés (Jest/Supertest).
 
