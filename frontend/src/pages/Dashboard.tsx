@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useBookStore } from "../store/useBookStore";
 import { Book } from "lucide-react";
+import { AddBookModal } from "../components/AddBookModal";
 
 export const Dashboard = () => {
   const { books, isLoading, error, fetchBooks } = useBookStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchBooks();
@@ -16,7 +18,10 @@ export const Dashboard = () => {
           Catalogue des Livres
         </h2>
 
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="bg-blue-600 cursor-pointer hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition"
+        >
           + Ajouter un livre
         </button>
       </div>
@@ -70,6 +75,11 @@ export const Dashboard = () => {
           )}
         </div>
       )}
+
+      <AddBookModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

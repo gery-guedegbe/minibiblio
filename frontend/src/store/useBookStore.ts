@@ -7,6 +7,7 @@ interface BookState {
   isLoading: boolean;
   error: string | null;
   fetchBooks: () => Promise<void>;
+  addBook: (bookData: Omit<Book, "id" | "available_copies">) => Promise<void>;
 }
 
 export const useBookStore = create<BookState>((set) => ({
@@ -20,10 +21,19 @@ export const useBookStore = create<BookState>((set) => ({
       const response = await api.get<Book[]>("/books");
       set({ books: response.data, isLoading: false });
     } catch (err: any) {
-      // On récupère le message d'erreur renvoyé par le backend
       const message =
         err.response?.data?.error || "Erreur de connexion au serveur";
       set({ error: message, isLoading: false });
+    }
+  },
+
+  addBook: async (bookData) => {
+    try {
+      const response = await api.post<Book>("/books", bookData);
+
+      set((state) => ({ books: [response.data, ...state.books] }));
+    } catch (err: any) {
+      throw new Error(err.response?.data?.error || "Erreur lors de l'ajout");
     }
   },
 }));
